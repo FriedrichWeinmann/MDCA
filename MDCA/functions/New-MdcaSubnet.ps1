@@ -76,7 +76,7 @@
 		if ($Organization) { $body.organization = $Organization }
 		if ($Tag) { $body.tags = $Tag }
 
-		Invoke-PSFProtectedCommand -ActionString 'Set-MdcaSubnet.Modify' -ActionStringValues $Name -Target $Name -ScriptBlock {
+		Invoke-PSFProtectedCommand -ActionString 'New-MdcaSubnet.Create' -ActionStringValues $Name -Target $Name -ScriptBlock {
 			$newID = Invoke-RestRequest -Method Post -Path "subnet/create_rule/" -Body $body
 		} -EnableException $EnableException -PSCmdlet $PSCmdlet
 
