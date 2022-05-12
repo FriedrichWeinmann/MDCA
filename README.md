@@ -1,31 +1,53 @@
-﻿# Description
+﻿# Microsoft Defender for Cloud Apps
 
-Insert a useful description for the MDCA project here.
+Welcome to the unofficial PowerShell module to interact with the API for Microsoft Defender for Cloud Apps (previously known as Microsoft Cloud App Security or MCAS).
 
-Remember, it's the first thing a visitor will see.
+## Installation
 
-# Project Setup Instructions
-## Working with the layout
+To install it and get ready to use the module, run this command on an internet facing computer:
 
-- Don't touch the psm1 file
-- Place functions you export in `functions/` (can have subfolders)
-- Place private/internal functions invisible to the user in `internal/functions` (can have subfolders)
-- Don't add code directly to the `postimport.ps1` or `preimport.ps1`.
-  Those files are designed to import other files only.
-- When adding files & folders, make sure they are covered by either `postimport.ps1` or `preimport.ps1`.
-  This adds them to both the import and the build sequence.
+```powershell
+Install-Module MDCA -Scope CurrentUser
+```
 
-## Setting up CI/CD
+## Getting Started
 
-> To create a PR validation pipeline, set up tasks like this:
+To get ready to roll, you first need to prepare an App Registration in the Azure Portal and assign scopes as needed.
+There is official documentation on how to do so:
 
-- Install Prerequisites (PowerShell Task; VSTS-Prerequisites.ps1)
-- Validate (PowerShell Task; VSTS-Validate.ps1)
-- Publish Test Results (Publish Test Results; NUnit format; Run no matter what)
++ [Application Context (aka: unattended)](https://docs.microsoft.com/en-us/defender-cloud-apps/api-authentication-application)
++ [User Context (interactive, MFA, ...)](https://docs.microsoft.com/en-us/defender-cloud-apps/api-authentication-user)
 
-> To create a build/publish pipeline, set up tasks like this:
+Once done, you can connect to the MCAS API thus:
 
-- Install Prerequisites (PowerShell Task; VSTS-Prerequisites.ps1)
-- Validate (PowerShell Task; VSTS-Validate.ps1)
-- Build (PowerShell Task; VSTS-Build.ps1)
-- Publish Test Results (Publish Test Results; NUnit format; Run no matter what)
+```powershell
+$clientID = '<insert app id>'
+$tenantID = '<insert tenant ID>'
+$tenantName = '<insert tenant name>'
+
+# Logon as user
+Connect-MdcaService -ClientID $clientID -TenantID $tenantID -TenantName $tenantName -DeviceCode
+
+# Logon as application
+Connect-MdcaService -ClientID $clientID -TenantID $tenantID -TenantName $tenantName -Certificate (Get-Item -Path "cert:\CurrentUser\My\<thumbprint>")
+```
+
+Once connected, the other commands of the module can be used to interact with the API.
+For example:
+
+```powershell
+# List all subnets
+Get-MdcaSubnet
+```
+
+> Note: Not all capabilities of the API have been mapped yet, more shall be added over time. If a specific API endpoint is missing that you want to use, file an issue and I'll try to prioritize those.
+
+## Working with the API directly
+
+Since not everything has been mapped so far, you may not want to wait for the commands to be created.
+In the meantime, you can already use the connection and perform custom requests:
+
+```powershell
+# Retrieve all activities
+Invoke-MdcaRequest -Path activities
+```
