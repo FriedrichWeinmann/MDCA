@@ -43,6 +43,7 @@
 	FunctionsToExport = @(
 		'Connect-MdcaService'
 		'Get-MdcaSubnet'
+		'Invoke-MdcaRequest'
 		'New-MdcaSubnet'
 		'Remove-MdcaSubnet'
 		'Set-MdcaSubnet'

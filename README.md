@@ -41,3 +41,13 @@ Get-MdcaSubnet
 ```
 
 > Note: Not all capabilities of the API have been mapped yet, more shall be added over time. If a specific API endpoint is missing that you want to use, file an issue and I'll try to prioritize those.
+
+## Working with the API directly
+
+Since not everything has been mapped so far, you may not want to wait for the commands to be created.
+In the meantime, you can already use the connection and perform custom requests:
+
+```powershell
+# Retrieve all activities
+Invoke-MdcaRequest -Path activities
+```
