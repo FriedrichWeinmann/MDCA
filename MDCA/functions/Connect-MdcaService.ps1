@@ -77,11 +77,17 @@
 	#>
 	[CmdletBinding()]
 	param (
-		[Parameter(Mandatory = $true)]
+		[Parameter(Mandatory = $true, ParameterSetName = 'DeviceCode')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'AppCertificate')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'AppSecret')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'UsernamePassword')]
 		[string]
 		$ClientID,
 
-		[Parameter(Mandatory = $true)]
+		[Parameter(Mandatory = $true, ParameterSetName = 'DeviceCode')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'AppCertificate')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'AppSecret')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'UsernamePassword')]
 		[string]
 		$TenantID,
 
@@ -122,7 +128,11 @@
 
 		[Parameter(Mandatory = $true, ParameterSetName = 'UsernamePassword')]
 		[PSCredential]
-		$Credential
+		$Credential,
+
+		[Parameter(Mandatory = $true, ParameterSetName = 'LegacyToken')]
+		[System.Security.SecureString]
+		$Token
 	)
 
 	begin {
@@ -133,6 +143,27 @@
 	}
 
 	process {
+		if ($Token) {
+			Write-PSFMessage -Level Warning -Message 'Connect-MdcaService.Deprecated' -Once TokenIsDeprecated
+			$param = @{
+				Service            = 'MDCA'
+				ServiceUrl         = "https://$TenantName.portal.cloudappsecurity.com/api/v1"
+				ValidAfter         = (Get-Date)
+				ValidUntil         = (Get-Date).AddYears(500)
+				Data               = @{ Token = $token }
+				ExtraHeaderContent = @{ 'content-type' = 'application/json' }
+				GetHeaderCode      = {
+					param ($Data)
+					
+					$token = [PSCredential]::new("foo", $Data.Data.Token).GetNetworkCredential().Password
+					@{ Authorization = "Token $token" }
+				}
+			}
+
+			Set-RestConnection @param
+			return
+		}
+
 		try { Connect-RestService @param -ErrorAction Stop }
 		catch { $PSCmdlet.ThrowTerminatingError($_) }
 		Set-RestConnection -Service MDCA -ExtraHeaderContent @{ 'content-type' = 'application/json' }
