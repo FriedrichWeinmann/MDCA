@@ -1,11 +1,13 @@
 ﻿# This is where the strings go, that are written by
 # Write-PSFMessage, Stop-PSFFunction or the PSFramework validation scriptblocks
 @{
-	'New-MdcaSubnet.Create' = 'Creating a new subnet: {0}' # $Name
+	'Connect-MdcaService.Deprecated' = 'Using a token to authenticate to MDCA/MCAS is deprecated. Switch to AzureAD authentication for optiumal security: https://docs.microsoft.com/en-us/defender-cloud-apps/api-authentication' #
 
-	'Remove-MdcaSubnet.Deleting' = 'Deleting subnet {0}' # $subnetID
+	'New-MdcaSubnet.Create'          = 'Creating a new subnet: {0}' # $Name
 
-	'Set-MdcaSubnet.DuplicateName' = 'Error updating {0}: Duplicate name detected ({1} / {2}). The name of a subnet must be changed on each request.' # $ID, $Name, $subnet.name
-	'Set-MdcaSubnet.Modify' = 'Updating subnet {1} ({0})' # $subnet.name, $Name
-	'Set-MdcaSubnet.NotFound' = 'Unable to find subnet {0}. Ensure the subnet you are trying to modify actually exists.' # $ID
+	'Remove-MdcaSubnet.Deleting'     = 'Deleting subnet {0}' # $subnetID
+
+	'Set-MdcaSubnet.DuplicateName'   = 'Error updating {0}: Duplicate name detected ({1} / {2}). The name of a subnet must be changed on each request.' # $ID, $Name, $subnet.name
+	'Set-MdcaSubnet.Modify'          = 'Updating subnet {1} ({0})' # $subnet.name, $Name
+	'Set-MdcaSubnet.NotFound'        = 'Unable to find subnet {0}. Ensure the subnet you are trying to modify actually exists.' # $ID
 }
