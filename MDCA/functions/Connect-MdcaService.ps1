@@ -64,6 +64,10 @@
 
         Part of the Username and Password delegate authentication workflow.
         Note: This workflow only works with cloud-only accounts and requires scopes to be pre-approved.
+
+	.PARAMETER Token
+		A legacy token used to authorize API access.
+		These tokens are deprecated and should be avoided, but not every migration can be accomplished instantaneously...
 	
 	.EXAMPLE
 		PS C:\> Connect-MdcaService -ClientID $clientID -TenantID $tenantID -TenantName contoso -Certificate $cert
@@ -144,7 +148,7 @@
 
 	process {
 		if ($Token) {
-			Write-PSFMessage -Level Warning -Message 'Connect-MdcaService.Deprecated' -Once TokenIsDeprecated
+			Write-PSFMessage -Level Warning -String 'Connect-MdcaService.Deprecated' -Once TokenIsDeprecated
 			$param = @{
 				Service            = 'MDCA'
 				ServiceUrl         = "https://$TenantName.portal.cloudappsecurity.com/api/v1"
