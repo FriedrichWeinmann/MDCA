@@ -12,6 +12,11 @@
     .PARAMETER TenantID
         The ID of the tenant/directory to connect to.
 
+	.PARAMETER TenantName
+		The simple name of the tenant.
+		Assuming the path to the MDCA portal is https://contoso.portal.cloudappsecurity.com/#/dashboard
+		Then the TenantName would be "contoso"
+
     .PARAMETER Scopes
         Any scopes to include in the request.
         Only used for interactive/delegate workflows, ignored for Certificate based authentication or when using Client Secrets.
