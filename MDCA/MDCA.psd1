@@ -3,7 +3,7 @@
 	RootModule = 'MDCA.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '1.0.1'
+	ModuleVersion = '1.1.4'
 	
 	# ID used to uniquely identify this module
 	GUID = '7b955241-e163-40f8-9d41-84433d2171a8'
@@ -27,7 +27,7 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.6.214' }
-		@{ ModuleName='RestConnect'; ModuleVersion='1.0.9' }
+		@{ ModuleName='RestConnect'; ModuleVersion='1.0.10' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
@@ -42,6 +42,8 @@
 	# Functions to export from this module
 	FunctionsToExport = @(
 		'Connect-MdcaService'
+		'Get-MdcaAlert'
+		'Get-MdcaFile'
 		'Get-MdcaSubnet'
 		'Invoke-MdcaRequest'
 		'New-MdcaSubnet'
