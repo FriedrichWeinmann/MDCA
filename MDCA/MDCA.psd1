@@ -3,7 +3,7 @@
 	RootModule = 'MDCA.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '1.2.4'
+	ModuleVersion = '1.1.4'
 	
 	# ID used to uniquely identify this module
 	GUID = '7b955241-e163-40f8-9d41-84433d2171a8'
