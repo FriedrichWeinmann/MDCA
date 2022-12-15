@@ -16,6 +16,7 @@
 		The simple name of the tenant.
 		Assuming the path to the MDCA portal is https://contoso.portal.cloudappsecurity.com/#/dashboard
 		Then the TenantName would be "contoso"
+		Use the "-ServiceUrl" parameter if connecting to special clouds and need to change the domain "cloudappsecurity.com".
 
     .PARAMETER Scopes
         Any scopes to include in the request.
@@ -68,6 +69,12 @@
 	.PARAMETER Token
 		A legacy token used to authorize API access.
 		These tokens are deprecated and should be avoided, but not every migration can be accomplished instantaneously...
+
+	.PARAMETER ServiceUrl
+		The pattern for the Url to connect to.
+		This usually needs not be changed other than when connecting to non-default clouds.
+		Receives the tenant-name as format-value that will be inserted into {0} if present.
+		Defaults to: https://{0}.portal.cloudappsecurity.com/api/v1
 	
 	.EXAMPLE
 		PS C:\> Connect-MdcaService -ClientID $clientID -TenantID $tenantID -TenantName contoso -Certificate $cert
@@ -136,13 +143,16 @@
 
 		[Parameter(Mandatory = $true, ParameterSetName = 'LegacyToken')]
 		[System.Security.SecureString]
-		$Token
+		$Token,
+
+		[string]
+		$ServiceUrl = 'https://{0}.portal.cloudappsecurity.com/api/v1'
 	)
 
 	begin {
 		$param = $PSBoundParameters | ConvertTo-PSFHashtable -ReferenceCommand Connect-RestService
 		$param.Service = 'MDCA'
-		$param.ServiceUrl = "https://$TenantName.portal.cloudappsecurity.com/api/v1"
+		$param.ServiceUrl = $ServiceUrl -f $TenantName
 		$param.Resource = '05a65629-4c1b-48c1-a78b-804c4abdd4af'
 	}
 
@@ -151,7 +161,7 @@
 			Write-PSFMessage -Level Warning -String 'Connect-MdcaService.Deprecated' -Once TokenIsDeprecated
 			$param = @{
 				Service            = 'MDCA'
-				ServiceUrl         = "https://$TenantName.portal.cloudappsecurity.com/api/v1"
+				ServiceUrl         = $ServiceUrl -f $TenantName
 				ValidAfter         = (Get-Date)
 				ValidUntil         = (Get-Date).AddYears(500)
 				Data               = @{ Token = $token }
